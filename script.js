@@ -14,6 +14,10 @@ setTimeout(function () {
 
   var restartElement = document.getElementById("restart");
 
+  var ballElement = document.getElementById("ball");
+
+  var ball = false;
+
   var coord = [];
 
   var x0, y0, x1, y1; // main line
@@ -68,6 +72,13 @@ setTimeout(function () {
       goodDistanceCalc(x0, x1, y0, y1);
       x1 = goodDistance[0];
       y1 = goodDistance[1];
+    }
+
+    if (ball) {
+      ctx.beginPath();
+      ctx.strokeStyle = "lightgreen";
+      ctx.arc(x0, y0, 7, 0, 2 * Math.PI);
+      ctx.stroke();
     }
 
     ctx.strokeStyle = "lightgreen";
@@ -234,5 +245,32 @@ setTimeout(function () {
   });
   document.addEventListener("click", () => {
     restart();
+  })
+
+  var settingsElement = document.getElementById("settings");
+
+  var cursorElement = document.getElementById("cursor");
+
+  settingsElement.style.left = window.innerWidth / 2 - 300 + "px";
+  settingsElement.style.top = window.innerHeight / 2 + 300 + "px";
+
+  cursor = true;
+
+  cursorElement.addEventListener("click", (e) => {
+    if (cursor) {
+      cursor = false;
+      canvas.style.cursor = "initial";
+    } else {
+      cursor = true;
+      canvas.style.cursor = "url(circle.png) 16 16, auto";
+    }
+  })
+
+  ballElement.addEventListener("click", (e) => {
+    if (ball) {
+      ball = false;
+    } else {
+      ball = true;
+    }
   })
 }, 50);
