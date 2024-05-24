@@ -102,8 +102,6 @@ setTimeout(function () {
       var y = y0 + (i / 500) * (y1 - y0);
       coord.push({ x, y });
     }
-
-    console.log(coord);
   }
 
   var goodDistance = [];
@@ -137,7 +135,7 @@ setTimeout(function () {
       if (timerLimit <= 0) {
         clearInterval(timerStart);
         timerElement.innerHTML = "0";
-        restartElement.innerHTML = "press any key/click to restart";
+        restartElement.innerHTML = "press r/click to restart";
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.font = "50px portcullion";
         ctx.fillStyle = "white";
@@ -151,7 +149,7 @@ setTimeout(function () {
       }
       if (error == true) {
         clearInterval(timerStart);
-        restartElement.innerHTML = "press any key/click to restart";
+        restartElement.innerHTML = "press r/click to restart";
         timerLimit = 0;
       }
     }, 100);
@@ -187,7 +185,7 @@ setTimeout(function () {
         }
         if (error == true) {
           clearInterval(timerStart);
-          restartElement.innerHTML = "press any key/click to restart";
+          restartElement.innerHTML = "press r/click to restart";
           timerLimit = 0;
           drawError(cx, cy);
         }
@@ -225,8 +223,14 @@ setTimeout(function () {
     error = false;
     initialize();
   }
-  document.addEventListener("keyup", () => {
-    restart();
+  document.addEventListener("keyup", (e) => {
+    if (
+      e.key === "r" ||
+      e.code === "KeyR" ||
+      e.which === "82"
+    ) {
+      restart();
+    }
   });
   document.addEventListener("click", () => {
     restart();
