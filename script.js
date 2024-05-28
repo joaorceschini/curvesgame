@@ -136,6 +136,9 @@ setTimeout(function () {
   infoElement.style.top = window.innerHeight / 2 - 300 + "px";
   infoElement.style.width = rect.width - 20 + "px"; // 20 is the padding
 
+  var restartMessage = "press r/space to restart";
+  var restartOnMouse = false;
+
   var timerStart = null,
     timerLimit = 30,
     error = false;
@@ -146,21 +149,17 @@ setTimeout(function () {
       if (timerLimit <= 0) {
         clearInterval(timerStart);
         timerElement.innerHTML = "0";
-        restartElement.innerHTML = "press r/click to restart";
+        restartElement.innerHTML = restartMessage;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.font = "50px portcullion";
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(
-          score - 1,
-          canvas.width / 2,
-          canvas.height / 2
-        );
+        ctx.fillText(score - 1, canvas.width / 2, canvas.height / 2);
       }
       if (error == true) {
         clearInterval(timerStart);
-        restartElement.innerHTML = "press r/click to restart";
+        restartElement.innerHTML = restartMessage;
         timerLimit = 0;
       }
     }, 100);
@@ -196,7 +195,7 @@ setTimeout(function () {
         }
         if (error == true) {
           clearInterval(timerStart);
-          restartElement.innerHTML = "press r/click to restart";
+          restartElement.innerHTML = restartMessage;
           timerLimit = 0;
           drawError(cx, cy);
         }
@@ -238,14 +237,19 @@ setTimeout(function () {
     if (
       e.key === "r" ||
       e.code === "KeyR" ||
-      e.which === "82"
+      e.which === "82" ||
+      e.key === " " ||
+      e.code === "Space" ||
+      e.which === "32"
     ) {
       restart();
     }
   });
   document.addEventListener("click", () => {
-    restart();
-  })
+    if (restartOnMouse) {
+      restart();
+    }
+  });
 
   var settingsElement = document.getElementById("settings");
 
@@ -264,7 +268,7 @@ setTimeout(function () {
       cursor = true;
       canvas.style.cursor = "url(circle.png) 16 16, auto";
     }
-  })
+  });
 
   ballElement.addEventListener("click", (e) => {
     if (ball) {
@@ -272,5 +276,17 @@ setTimeout(function () {
     } else {
       ball = true;
     }
-  })
+  });
+
+  var restartButtonElement = document.getElementById("restartButton");
+
+  restartButtonElement.addEventListener("click", (e) => {
+    if (restartOnMouse) {
+      restartOnMouse = false;
+      restartMessage = "press r/space to restart";
+    } else {
+      restartOnMouse = true;
+      restartMessage = "press r/space or click to restart";
+    }
+  });
 }, 50);
